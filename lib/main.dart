@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/order.dart';
+import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/screens/order_screen.dart';
 
-import './screeens/product_overiew_screen.dart';
-import './screeens/product_detail_screen.dart';
+import 'screens/product_overview_screen.dart';
+import './screens/product_detail_screen.dart';
 import './providers/products.dart';
+import './providers/cart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +19,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => Products(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => Products(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Order(),
+        ),
+      ],
       child: MaterialApp(
         title: 'My shop',
         theme: ThemeData(
@@ -24,32 +38,13 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
         ),
-        home: ProductOverviewScreen(),
+        home: const ProductOverviewScreen(),
         routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()
+          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => const CartScreen(),
+          OrderScreen.routeName: (ctx) => const OrderScreen(),
         },
       ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My shop'),
-      ),
-      body: const Center(
-        child: Text('Let\'s build a shop'),
-      )
     );
   }
 }
