@@ -41,7 +41,7 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-    List<Product> get favoriteItems {
+  List<Product> get favoriteItems {
     return _items.where((element) => element.isFavorite).toList();
   }
 
@@ -49,8 +49,22 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void addProduct() {
-    // _items.add(value);
+  void addProduct(Product product) {
+    _items.add(
+      Product(
+        id: DateTime.now().toString(),
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      ),
+    );
+    notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    var index = _items.indexWhere((item) => item.id == product.id);
+    _items[index] = product;
     notifyListeners();
   }
 }
